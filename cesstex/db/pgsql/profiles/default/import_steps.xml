@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<import-steps>
+
+ <import-step id="installPgsql"
+              version="20080107-01"
+              handler="cesstex.db.pgsql.install.setupPgsql"
+              title="Install Pgsql">
+    Install Pgsql
+ </import-step>
+
+</import-steps>
