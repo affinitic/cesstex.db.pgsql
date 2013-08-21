@@ -9,7 +9,7 @@
 
   <utility
       name="cesstexMappings"
-      factory=".initializer.CarcobModel"
+      factory=".initializer.CesstexModel"
       provides="z3c.sqlalchemy.interfaces.IModelProvider"
       />
 

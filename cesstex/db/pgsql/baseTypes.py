@@ -10,5 +10,25 @@ $Id: baseTypes.py 5772 2009-05-20 15:59:55Z schminitz $
 from z3c.sqlalchemy.mapper import MappedClassBase
 
 
-class Pedagogique(MappedClassBase):
+class EtatPublication(MappedClassBase):
+    c = None
+
+
+class StatutMembre(MappedClassBase):
+    c = None
+
+
+class Professeur(MappedClassBase):
+    c = None
+
+
+class Etudiant(MappedClassBase):
+    c = None
+
+
+class DossierDisciplinaire(MappedClassBase):
+    c = None
+
+
+class EvenementActe(MappedClassBase):
     c = None
