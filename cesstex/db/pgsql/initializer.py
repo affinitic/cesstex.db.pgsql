@@ -58,7 +58,7 @@ class CesstexModel(object):
                                           primaryjoin=(etudiantTable.c.eleve_prof_titulaire_01_fk == professeurTable.c.prof_pk),
                                           order_by=[etudiantTable.c.eleve_nom]),
                            'titulaire02': relationship(Professeur,
-                                          primaryjoin=(etudiantTable.c.eleve_prof_titulaire_01_fk == professeurTable.c.prof_pk),
+                                          primaryjoin=(etudiantTable.c.eleve_prof_titulaire_02_fk == professeurTable.c.prof_pk),
                                           order_by=[etudiantTable.c.eleve_nom])})
 
         mapper(DossierDisciplinaire, dossierDisciplinaireTable,
