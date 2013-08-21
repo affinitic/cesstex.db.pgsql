@@ -76,7 +76,7 @@ def getDossierDisciplinaire(metadata):
                         primary_key=True),
                  Column('dosdis_id', Text()),
                  Column('dosdis_date_creation', DateTime(), default=func.now()),
-                 Column('dosdis_annee_scolaire', DateTime()),
+                 Column('dosdis_annee_scolaire', Integer()),
                  Column('dosdis_actif', Boolean(), default=True),
                  Column('dosdis_eleve_fk', Integer(),
                          ForeignKey('etudiant.eleve_pk')),
