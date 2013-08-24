@@ -67,8 +67,10 @@ class CesstexModel(object):
 
         mapper(EvenementActe, evenementActeTable,
                properties={'etat': relationship(EtatPublication,
+                                                primaryjoin=(evenementActeTable.c.eventact_etat_publication_fk == etatPublicationTable.c.etat_pk),
                                                 order_by=[etatPublicationTable.c.etat_titre]),
                            'dossier': relationship(DossierDisciplinaire,
+                                                   primaryjoin=(evenementActeTable.c.eventact_dossier_diciplinaire_fk == dossierDisciplinaireTable.c.dosdis_pk),
                                                    order_by=[dossierDisciplinaireTable.c.dosdis_date_creation])})
 
         metadata.create_all()
