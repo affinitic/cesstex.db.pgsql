@@ -105,3 +105,19 @@ def getEvenementActe(metadata):
                          ForeignKey('dossier_disciplinaire.dosdis_pk')),
                  autoload=autoload,
                  extend_existing=True)
+
+
+def getEvenementActeLogModification(metadata):
+    autoload = False
+    if metadata.bind.has_table('evenement_acte_log_modification'):
+        autoload = True
+    return Table('evenement_acte_log_modification', metadata,
+                 Column('eventactlogmodif_pk', Integer(),
+                        Sequence('evenement_acte_log_modification_eventactlogmodif_pk_seq'),
+                        primary_key=True),
+                 Column('eventactlogmodif_date_modification', DateTime(), default=func.now()),
+                 Column('eventactlogmodif_auteur', Text()),
+                 Column('eventactlogmodif_evenement_acte_fk', Integer(),
+                         ForeignKey('evenement_acte.eventact_pk')),
+                 autoload=autoload,
+                 extend_existing=True)

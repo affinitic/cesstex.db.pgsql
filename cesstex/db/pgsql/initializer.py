@@ -7,11 +7,11 @@ from sqlalchemy.orm import mapper, relationship
 
 from cesstex.db.pgsql.baseTypes import (EtatPublication, StatutMembre,
                                         Professeur, Etudiant, DossierDisciplinaire,
-                                        EvenementActe)
+                                        EvenementActe, EvenementActeLogModification)
 
 from cesstex.db.pgsql.tables import (getEtatPublication, getStatutMembre,
                                      getProfesseur, getEtudiant, getDossierDisciplinaire,
-                                     getEvenementActe)
+                                     getEvenementActe, getEvenementActeLogModification)
 
 
 class CesstexModel(object):
@@ -45,7 +45,10 @@ class CesstexModel(object):
 
         evenementActeTable = getEvenementActe(metadata)
         evenementActeTable.create(checkfirst=True)
-
+        
+        evenementActeLogModificationTable = getEvenementActeLogModification(metadata)
+        evenementActeLogModificationTable.create(checkfirst=True)
+        
         mapper(EtatPublication, etatPublicationTable)
 
         mapper(StatutMembre, statutMembreTable)
@@ -72,6 +75,11 @@ class CesstexModel(object):
                            'dossier': relationship(DossierDisciplinaire,
                                                    primaryjoin=(evenementActeTable.c.eventact_dossier_diciplinaire_fk == dossierDisciplinaireTable.c.dosdis_pk),
                                                    order_by=[dossierDisciplinaireTable.c.dosdis_date_creation])})
+
+        mapper(EvenementActeLogModification, evenementActeLogModificationTable,
+               properties={'logmodif': relationship(EtatPublication,
+                                                primaryjoin=(evenementActeLogModificationTable.c.eventactlogmodif_evenement_acte_fk == evenementActeTable.c.eventact_pk),
+                                                order_by=[evenementActeLogModificationTable.c.eventactlogmodif_date_modification])})
 
         metadata.create_all()
         return model

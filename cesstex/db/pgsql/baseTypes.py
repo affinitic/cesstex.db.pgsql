@@ -32,3 +32,7 @@ class DossierDisciplinaire(MappedClassBase):
 
 class EvenementActe(MappedClassBase):
     c = None
+
+
+class EvenementActeLogModification(MappedClassBase):
+    c = None
