@@ -77,7 +77,7 @@ class CesstexModel(object):
                                                    order_by=[dossierDisciplinaireTable.c.dosdis_date_creation])})
 
         mapper(EvenementActeLogModification, evenementActeLogModificationTable,
-               properties={'logmodif': relationship(EtatPublication,
+               properties={'logmodif': relationship(EvenementActe,
                                                 primaryjoin=(evenementActeLogModificationTable.c.eventactlogmodif_evenement_acte_fk == evenementActeTable.c.eventact_pk),
                                                 order_by=[evenementActeLogModificationTable.c.eventactlogmodif_date_modification])})
 
