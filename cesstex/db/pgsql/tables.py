@@ -62,6 +62,8 @@ def getEtudiant(metadata):
                          ForeignKey('professeur.prof_pk')),
                  Column('eleve_prof_titulaire_02_fk', Integer(),
                          ForeignKey('professeur.prof_pk')),
+                 Column('eleve_educateur_referent_fk', Integer(),
+                         ForeignKey('professeur.prof_pk')),
                  autoload=autoload,
                  extend_existing=True)
 
@@ -95,6 +97,7 @@ def getEvenementActe(metadata):
                         Sequence('evenement_acte_eventact_pk_seq'),
                         primary_key=True),
                  Column('eventact_date_creation', DateTime(), default=func.now()),
+                 Column('eventact_auteur_creation', Text()),
                  Column('eventact_evenement', Text()),
                  Column('eventact_sanction', Text()),
                  Column('eventact_document_attache', Boolean(), default=False),
@@ -116,7 +119,7 @@ def getEvenementActeLogModification(metadata):
                         Sequence('evenement_acte_log_modification_eventactlogmodif_pk_seq'),
                         primary_key=True),
                  Column('eventactlogmodif_date_modification', DateTime(), default=func.now()),
-                 Column('eventactlogmodif_auteur', Text()),
+                 Column('eventactlogmodif_auteur_modification', Text()),
                  Column('eventactlogmodif_evenement_acte_fk', Integer(),
                          ForeignKey('evenement_acte.eventact_pk')),
                  autoload=autoload,

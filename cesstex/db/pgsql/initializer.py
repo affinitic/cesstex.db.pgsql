@@ -45,10 +45,10 @@ class CesstexModel(object):
 
         evenementActeTable = getEvenementActe(metadata)
         evenementActeTable.create(checkfirst=True)
-        
+
         evenementActeLogModificationTable = getEvenementActeLogModification(metadata)
         evenementActeLogModificationTable.create(checkfirst=True)
-        
+
         mapper(EtatPublication, etatPublicationTable)
 
         mapper(StatutMembre, statutMembreTable)
@@ -61,8 +61,10 @@ class CesstexModel(object):
                                           primaryjoin=(etudiantTable.c.eleve_prof_titulaire_01_fk == professeurTable.c.prof_pk),
                                           order_by=[etudiantTable.c.eleve_nom]),
                            'titulaire02': relationship(Professeur,
-                                          primaryjoin=(etudiantTable.c.eleve_prof_titulaire_02_fk == professeurTable.c.prof_pk),
-                                          order_by=[etudiantTable.c.eleve_nom])})
+                                          primaryjoin=(etudiantTable.c.eleve_prof_titulaire_02_fk == professeurTable.c.prof_pk)),
+                           'educateurReferent': relationship(Professeur,
+                                                primaryjoin=(etudiantTable.c.eleve_educateur_referent_fk == professeurTable.c.prof_pk),
+                                                order_by=[etudiantTable.c.eleve_nom])})
 
         mapper(DossierDisciplinaire, dossierDisciplinaireTable,
                properties={'student': relationship(Etudiant),
