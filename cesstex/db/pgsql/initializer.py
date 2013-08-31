@@ -2,8 +2,9 @@ from z3c.sqlalchemy import Model
 from z3c.sqlalchemy.interfaces import IModelProvider
 from zope.interface import implements
 
-#from sqlalchemy import desc
+from sqlalchemy import desc
 from sqlalchemy.orm import mapper, relationship
+
 
 from cesstex.db.pgsql.baseTypes import (EtatPublication, StatutMembre,
                                         Professeur, Etudiant, DossierDisciplinaire,
@@ -76,7 +77,7 @@ class CesstexModel(object):
                                                 order_by=[etatPublicationTable.c.etat_titre]),
                            'dossier': relationship(DossierDisciplinaire,
                                                    primaryjoin=(evenementActeTable.c.eventact_dossier_diciplinaire_fk == dossierDisciplinaireTable.c.dosdis_pk),
-                                                   order_by=[dossierDisciplinaireTable.c.dosdis_date_creation])})
+                                                   order_by=[desc(dossierDisciplinaireTable.c.dosdis_date_creation)])})
 
         mapper(EvenementActeLogModification, evenementActeLogModificationTable,
                properties={'logmodif': relationship(EvenementActe,
