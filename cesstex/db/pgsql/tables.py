@@ -41,7 +41,9 @@ def getProfesseur(metadata):
                  Column('prof_nom', Text()),
                  Column('prof_prenom', Text()),
                  Column('prof_email', Text()),
-                 Column('prof_statut', Integer(),
+                 Column('prof_login', Text()),
+                 Column('prof_pass', Text()),
+                 Column('prof_statut_fk', Integer(),
                          ForeignKey('statut_membre.statmembre_pk')),
                  autoload=autoload,
                  extend_existing=True)

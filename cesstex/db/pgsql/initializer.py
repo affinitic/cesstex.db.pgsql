@@ -55,7 +55,8 @@ class CesstexModel(object):
         mapper(StatutMembre, statutMembreTable)
 
         mapper(Professeur, professeurTable,
-               properties={'statut': relationship(StatutMembre)})
+               properties={'statut': relationship(StatutMembre,
+                                     primaryjoin=(professeurTable.c.prof_statut_fk == statutMembreTable.c.statmembre_pk))})
 
         mapper(Etudiant, etudiantTable,
                properties={'titulaire01': relationship(Professeur,
