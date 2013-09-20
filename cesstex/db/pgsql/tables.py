@@ -104,6 +104,7 @@ def getEvenementActe(metadata):
                  Column('eventact_sanction', Text()),
                  Column('eventact_document_attache', Boolean(), default=False),
                  Column('eventact_intervenant', Text()),
+                 Column('eventact_numero_ordre', Integer()),
                  Column('eventact_etat_publication_fk', Integer(),
                          ForeignKey('etat_publication.etat_pk')),
                  Column('eventact_dossier_diciplinaire_fk', Integer(),
