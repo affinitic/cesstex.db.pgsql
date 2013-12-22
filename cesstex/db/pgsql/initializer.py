@@ -8,11 +8,13 @@ from sqlalchemy.orm import mapper, relationship
 
 from cesstex.db.pgsql.baseTypes import (EtatPublication, StatutMembre,
                                         Professeur, Etudiant, DossierDisciplinaire,
-                                        EvenementActe, EvenementActeLogModification)
+                                        EvenementActe, EvenementActeLogModification,
+                                        EvenementActeDocument)
 
 from cesstex.db.pgsql.tables import (getEtatPublication, getStatutMembre,
                                      getProfesseur, getEtudiant, getDossierDisciplinaire,
-                                     getEvenementActe, getEvenementActeLogModification)
+                                     getEvenementActe, getEvenementActeLogModification,
+                                     getEvenementActeDocument)
 
 
 class CesstexModel(object):
@@ -50,6 +52,9 @@ class CesstexModel(object):
         evenementActeLogModificationTable = getEvenementActeLogModification(metadata)
         evenementActeLogModificationTable.create(checkfirst=True)
 
+        evenementActeDocumentTable = getEvenementActeDocument(metadata)
+        evenementActeDocumentTable.create(checkfirst=True)
+
         mapper(EtatPublication, etatPublicationTable)
 
         mapper(StatutMembre, statutMembreTable)
@@ -78,12 +83,20 @@ class CesstexModel(object):
                                    order_by=[etatPublicationTable.c.etat_titre]),
                            'dossier': relationship(DossierDisciplinaire,
                                       primaryjoin=(evenementActeTable.c.eventact_dossier_diciplinaire_fk == dossierDisciplinaireTable.c.dosdis_pk),
-                                      order_by=[desc(dossierDisciplinaireTable.c.dosdis_date_creation)])})
+                                      order_by=[desc(dossierDisciplinaireTable.c.dosdis_date_creation)]),
+                           'documentAttache': relationship(EvenementActeDocument,
+                                              primaryjoin=(evenementActeTable.c.eventact_pk == evenementActeDocumentTable.c.eventactdoc_eventact_fk))})
 
         mapper(EvenementActeLogModification, evenementActeLogModificationTable,
                properties={'logmodif': relationship(EvenementActe,
                                        primaryjoin=(evenementActeLogModificationTable.c.eventactlogmodif_evenement_acte_fk == evenementActeTable.c.eventact_pk),
                                        order_by=[evenementActeLogModificationTable.c.eventactlogmodif_date_modification])})
+
+        mapper(EvenementActeDocument, evenementActeDocumentTable,
+               properties={'evenement': relationship(EvenementActe,
+                                        primaryjoin=(evenementActeDocumentTable.c.eventactdoc_eventact_fk == evenementActeTable.c.eventact_pk)),
+                           'dossier': relationship(DossierDisciplinaire,
+                                      primaryjoin=(evenementActeDocumentTable.c.eventactdoc_dossier_diciplinaire_fk == dossierDisciplinaireTable.c.dosdis_pk))})
 
         metadata.create_all()
         return model

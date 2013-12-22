@@ -127,3 +127,20 @@ def getEvenementActeLogModification(metadata):
                          ForeignKey('evenement_acte.eventact_pk')),
                  autoload=autoload,
                  extend_existing=True)
+
+def getEvenementActeDocument(metadata):
+    autoload = False
+    if metadata.bind.has_table('evenement_acte_document'):
+        autoload = True
+    return Table('evenement_acte_document', metadata,
+                 Column('eventactdoc_pk', Integer(),
+                        primary_key=True),
+                 Column('eventactdoc_date_creation', DateTime(), default=func.now()),
+                 Column('eventactdoc_auteur_creation', Text()),
+                 Column('eventactdoc_nom_fichier', Text()),
+                 Column('eventactdoc_eventact_fk', Integer(),
+                         ForeignKey('evenement_acte.eventact_pk')),
+                 Column('eventactdoc_dossier_diciplinaire_fk', Integer(),
+                         ForeignKey('dossier_disciplinaire.dosdis_pk')),
+                 autoload=autoload,
+                 extend_existing=True)

@@ -36,3 +36,6 @@ class EvenementActe(MappedClassBase):
 
 class EvenementActeLogModification(MappedClassBase):
     c = None
+
+class EvenementActeDocument(MappedClassBase):
+    c = None
