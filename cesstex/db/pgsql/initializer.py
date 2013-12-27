@@ -8,13 +8,13 @@ from sqlalchemy.orm import mapper, relationship
 
 from cesstex.db.pgsql.baseTypes import (EtatPublication, StatutMembre,
                                         Professeur, Etudiant, DossierDisciplinaire,
-                                        EvenementActe, EvenementActeLogModification,
-                                        EvenementActeDocument)
+                                        EvenementActe, EvenementActeDocument,
+                                        EvenementActeLogModification, LogOperation)
 
 from cesstex.db.pgsql.tables import (getEtatPublication, getStatutMembre,
                                      getProfesseur, getEtudiant, getDossierDisciplinaire,
-                                     getEvenementActe, getEvenementActeLogModification,
-                                     getEvenementActeDocument)
+                                     getEvenementActe, getEvenementActeDocument,
+                                     getEvenementActeLogModification, getLogOperation)
 
 
 class CesstexModel(object):
@@ -49,11 +49,14 @@ class CesstexModel(object):
         evenementActeTable = getEvenementActe(metadata)
         evenementActeTable.create(checkfirst=True)
 
+        evenementActeDocumentTable = getEvenementActeDocument(metadata)
+        evenementActeDocumentTable.create(checkfirst=True)
+
         evenementActeLogModificationTable = getEvenementActeLogModification(metadata)
         evenementActeLogModificationTable.create(checkfirst=True)
 
-        evenementActeDocumentTable = getEvenementActeDocument(metadata)
-        evenementActeDocumentTable.create(checkfirst=True)
+        logOperationTable = getLogOperation(metadata)
+        logOperationTable.create(checkfirst=True)
 
         mapper(EtatPublication, etatPublicationTable)
 
@@ -87,16 +90,29 @@ class CesstexModel(object):
                            'documentAttache': relationship(EvenementActeDocument,
                                               primaryjoin=(evenementActeTable.c.eventact_pk == evenementActeDocumentTable.c.eventactdoc_eventact_fk))})
 
+        mapper(EvenementActeDocument, evenementActeDocumentTable,
+               properties={'auteur': relationship(Professeur,
+                                        primaryjoin=(evenementActeDocumentTable.c.eventactdoc_auteur_creation_fk == professeurTable.c.prof_pk)),
+                           'evenement': relationship(EvenementActe,
+                                        primaryjoin=(evenementActeDocumentTable.c.eventactdoc_eventact_fk == evenementActeTable.c.eventact_pk)),
+                           'dossier': relationship(DossierDisciplinaire,
+                                      primaryjoin=(evenementActeDocumentTable.c.eventactdoc_dossier_diciplinaire_fk == dossierDisciplinaireTable.c.dosdis_pk))})
+
         mapper(EvenementActeLogModification, evenementActeLogModificationTable,
                properties={'logmodif': relationship(EvenementActe,
                                        primaryjoin=(evenementActeLogModificationTable.c.eventactlogmodif_evenement_acte_fk == evenementActeTable.c.eventact_pk),
                                        order_by=[evenementActeLogModificationTable.c.eventactlogmodif_date_modification])})
 
-        mapper(EvenementActeDocument, evenementActeDocumentTable,
-               properties={'evenement': relationship(EvenementActe,
-                                        primaryjoin=(evenementActeDocumentTable.c.eventactdoc_eventact_fk == evenementActeTable.c.eventact_pk)),
-                           'dossier': relationship(DossierDisciplinaire,
-                                      primaryjoin=(evenementActeDocumentTable.c.eventactdoc_dossier_diciplinaire_fk == dossierDisciplinaireTable.c.dosdis_pk))})
+        mapper(LogOperation, logOperationTable,
+               properties={'logopprof': relationship(Professeur,
+                                        primaryjoin=(logOperationTable.c.logoperation_evenement_acte_fk == professeurTable.c.prof_pk),
+                                        order_by=[logOperationTable.c.logoperation_date]),
+                           'logopevent': relationship(EvenementActe,
+                                         primaryjoin=(logOperationTable.c.logoperation_evenement_acte_fk == evenementActeTable.c.eventact_pk),
+                                         order_by=[logOperationTable.c.logoperation_date]),
+                           'logopdosdis': relationship(DossierDisciplinaire,
+                                          primaryjoin=(logOperationTable.c.logoperation_dosdis_fk == dossierDisciplinaireTable.c.dosdis_pk),
+                                          order_by=[logOperationTable.c.logoperation_date])})
 
         metadata.create_all()
         return model

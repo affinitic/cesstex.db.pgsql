@@ -113,6 +113,25 @@ def getEvenementActe(metadata):
                  extend_existing=True)
 
 
+def getEvenementActeDocument(metadata):
+    autoload = False
+    if metadata.bind.has_table('evenement_acte_document'):
+        autoload = True
+    return Table('evenement_acte_document', metadata,
+                 Column('eventactdoc_pk', Integer(),
+                        primary_key=True),
+                 Column('eventactdoc_date_creation', DateTime(), default=func.now()),
+                 Column('eventactdoc_nom_fichier', Text()),
+                 Column('eventactdoc_auteur_creation_fk', Integer(),
+                         ForeignKey('professeur.prof_pk')),
+                 Column('eventactdoc_eventact_fk', Integer(),
+                         ForeignKey('evenement_acte.eventact_pk')),
+                 Column('eventactdoc_dossier_diciplinaire_fk', Integer(),
+                         ForeignKey('dossier_disciplinaire.dosdis_pk')),
+                 autoload=autoload,
+                 extend_existing=True)
+
+
 def getEvenementActeLogModification(metadata):
     autoload = False
     if metadata.bind.has_table('evenement_acte_log_modification'):
@@ -128,19 +147,23 @@ def getEvenementActeLogModification(metadata):
                  autoload=autoload,
                  extend_existing=True)
 
-def getEvenementActeDocument(metadata):
+
+def getLogOperation(metadata):
     autoload = False
-    if metadata.bind.has_table('evenement_acte_document'):
+    if metadata.bind.has_table('log_operation'):
         autoload = True
-    return Table('evenement_acte_document', metadata,
-                 Column('eventactdoc_pk', Integer(),
+    return Table('log_operation', metadata,
+                 Column('logoperation_pk', Integer(),
+                        Sequence('log_operation_log_operation_pk_seq'),
                         primary_key=True),
-                 Column('eventactdoc_date_creation', DateTime(), default=func.now()),
-                 Column('eventactdoc_auteur_creation', Text()),
-                 Column('eventactdoc_nom_fichier', Text()),
-                 Column('eventactdoc_eventact_fk', Integer(),
-                         ForeignKey('evenement_acte.eventact_pk')),
-                 Column('eventactdoc_dossier_diciplinaire_fk', Integer(),
+                 Column('logoperation_date', DateTime(), default=func.now()),
+                 Column('logoperation_auteur', Text()),
+                 Column('logoperation_type_operation', Text()),
+                 Column('logoperation_auteur_fk', Integer(),
+                         ForeignKey('professeur.prof_pk')),
+                 Column('logoperation_dosdis_fk', Integer(),
                          ForeignKey('dossier_disciplinaire.dosdis_pk')),
+                 Column('logoperation_evenement_acte_fk', Integer(),
+                         ForeignKey('evenement_acte.eventact_pk')),
                  autoload=autoload,
                  extend_existing=True)
