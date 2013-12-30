@@ -84,6 +84,8 @@ class CesstexModel(object):
                properties={'etat': relationship(EtatPublication,
                                    primaryjoin=(evenementActeTable.c.eventact_etat_publication_fk == etatPublicationTable.c.etat_pk),
                                    order_by=[etatPublicationTable.c.etat_titre]),
+                           'auteur': relationship(Professeur,
+                                     primaryjoin=(evenementActeTable.c.eventact_auteur_creation_fk == professeurTable.c.prof_pk)),
                            'dossier': relationship(DossierDisciplinaire,
                                       primaryjoin=(evenementActeTable.c.eventact_dossier_diciplinaire_fk == dossierDisciplinaireTable.c.dosdis_pk),
                                       order_by=[desc(dossierDisciplinaireTable.c.dosdis_date_creation)]),
@@ -96,23 +98,14 @@ class CesstexModel(object):
                            'evenement': relationship(EvenementActe,
                                         primaryjoin=(evenementActeDocumentTable.c.eventactdoc_eventact_fk == evenementActeTable.c.eventact_pk)),
                            'dossier': relationship(DossierDisciplinaire,
-                                      primaryjoin=(evenementActeDocumentTable.c.eventactdoc_dossier_diciplinaire_fk == dossierDisciplinaireTable.c.dosdis_pk))})
+                                      primaryjoin=(evenementActeDocumentTable.c.eventactdoc_dossier_disciplinaire_fk == dossierDisciplinaireTable.c.dosdis_pk))})
 
         mapper(EvenementActeLogModification, evenementActeLogModificationTable,
                properties={'logmodif': relationship(EvenementActe,
                                        primaryjoin=(evenementActeLogModificationTable.c.eventactlogmodif_evenement_acte_fk == evenementActeTable.c.eventact_pk),
                                        order_by=[evenementActeLogModificationTable.c.eventactlogmodif_date_modification])})
 
-        mapper(LogOperation, logOperationTable,
-               properties={'logopprof': relationship(Professeur,
-                                        primaryjoin=(logOperationTable.c.logoperation_evenement_acte_fk == professeurTable.c.prof_pk),
-                                        order_by=[logOperationTable.c.logoperation_date]),
-                           'logopevent': relationship(EvenementActe,
-                                         primaryjoin=(logOperationTable.c.logoperation_evenement_acte_fk == evenementActeTable.c.eventact_pk),
-                                         order_by=[logOperationTable.c.logoperation_date]),
-                           'logopdosdis': relationship(DossierDisciplinaire,
-                                          primaryjoin=(logOperationTable.c.logoperation_dosdis_fk == dossierDisciplinaireTable.c.dosdis_pk),
-                                          order_by=[logOperationTable.c.logoperation_date])})
-
+        mapper(LogOperation, logOperationTable)
+               
         metadata.create_all()
         return model
