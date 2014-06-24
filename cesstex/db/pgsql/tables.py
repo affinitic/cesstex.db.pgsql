@@ -30,6 +30,35 @@ def getStatutMembre(metadata):
                  extend_existing=True)
 
 
+def getEcole(metadata):
+    autoload = False
+    if metadata.bind.has_table('ecole'):
+        autoload = True
+    return Table('ecole', metadata,
+                 Column('ecole_pk', Integer(),
+                        Sequence('ecole_ecole_pk_seq'),
+                        primary_key=True),
+                 Column('ecole_nom', Text()),
+                 autoload=autoload,
+                 extend_existing=True)
+
+
+def getImplantation(metadata):
+    autoload = False
+    if metadata.bind.has_table('implantation'):
+        autoload = True
+    return Table('implantation', metadata,
+                 Column('implantation_pk', Integer(),
+                        Sequence('implantation_implantation_pk_seq'),
+                        primary_key=True),
+                 Column('implantation_nom', Text()),
+                 Column('implantation_adresse', Text()),
+                 Column('implantation_code_postal', Text()),
+                 Column('implantation_localite', Text()),
+                 autoload=autoload,
+                 extend_existing=True)
+
+
 def getProfesseur(metadata):
     autoload = False
     if metadata.bind.has_table('professeur'):
@@ -43,8 +72,11 @@ def getProfesseur(metadata):
                  Column('prof_email', Text()),
                  Column('prof_login', Text()),
                  Column('prof_pass', Text()),
+                 Column('prof_email_id', Text()),
                  Column('prof_statut_fk', Integer(),
                          ForeignKey('statut_membre.statmembre_pk')),
+                 Column('prof_ecole_fk', Integer(),
+                         ForeignKey('ecole.ecole_pk')),
                  autoload=autoload,
                  extend_existing=True)
 

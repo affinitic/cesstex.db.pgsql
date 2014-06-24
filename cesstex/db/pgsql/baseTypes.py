@@ -18,6 +18,14 @@ class StatutMembre(MappedClassBase):
     c = None
 
 
+class Ecole(MappedClassBase):
+    c = None
+
+
+class Implantation(MappedClassBase):
+    c = None
+
+
 class Professeur(MappedClassBase):
     c = None
 

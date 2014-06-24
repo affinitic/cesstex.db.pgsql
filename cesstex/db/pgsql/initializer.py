@@ -6,15 +6,29 @@ from sqlalchemy import desc
 from sqlalchemy.orm import mapper, relationship
 
 
-from cesstex.db.pgsql.baseTypes import (EtatPublication, StatutMembre,
-                                        Professeur, Etudiant, DossierDisciplinaire,
-                                        EvenementActe, EvenementActeDocument,
-                                        EvenementActeLogModification, LogOperation)
+from cesstex.db.pgsql.baseTypes import (EtatPublication,
+                                        StatutMembre,
+                                        Ecole,
+                                        Implantation,
+                                        Professeur,
+                                        Etudiant,
+                                        DossierDisciplinaire,
+                                        EvenementActe,
+                                        EvenementActeDocument,
+                                        EvenementActeLogModification,
+                                        LogOperation)
 
-from cesstex.db.pgsql.tables import (getEtatPublication, getStatutMembre,
-                                     getProfesseur, getEtudiant, getDossierDisciplinaire,
-                                     getEvenementActe, getEvenementActeDocument,
-                                     getEvenementActeLogModification, getLogOperation)
+from cesstex.db.pgsql.tables import (getEtatPublication,
+                                     getStatutMembre,
+                                     getEcole,
+                                     getImplantation,
+                                     getProfesseur,
+                                     getEtudiant,
+                                     getDossierDisciplinaire,
+                                     getEvenementActe,
+                                     getEvenementActeDocument,
+                                     getEvenementActeLogModification,
+                                     getLogOperation)
 
 
 class CesstexModel(object):
@@ -36,6 +50,12 @@ class CesstexModel(object):
 
         statutMembreTable = getStatutMembre(metadata)
         statutMembreTable.create(checkfirst=True)
+
+        ecoleTable = getEcole(metadata)
+        ecoleTable.create(checkfirst=True)
+
+        implantationTable = getImplantation(metadata)
+        implantationTable.create(checkfirst=True)
 
         professeurTable = getProfesseur(metadata)
         professeurTable.create(checkfirst=True)
@@ -62,9 +82,15 @@ class CesstexModel(object):
 
         mapper(StatutMembre, statutMembreTable)
 
+        mapper(Ecole, ecoleTable)
+
+        mapper(Implantation, implantationTable)
+
         mapper(Professeur, professeurTable,
                properties={'statut': relationship(StatutMembre,
-                                     primaryjoin=(professeurTable.c.prof_statut_fk == statutMembreTable.c.statmembre_pk))})
+                                     primaryjoin=(professeurTable.c.prof_statut_fk == statutMembreTable.c.statmembre_pk)),
+                           'ecole': relationship(Ecole,
+                                     primaryjoin=(professeurTable.c.prof_ecole_fk == ecoleTable.c.ecole_pk))})
 
         mapper(Etudiant, etudiantTable,
                properties={'titulaire01': relationship(Professeur,
@@ -106,6 +132,6 @@ class CesstexModel(object):
                                        order_by=[evenementActeLogModificationTable.c.eventactlogmodif_date_modification])})
 
         mapper(LogOperation, logOperationTable)
-               
+
         metadata.create_all()
         return model
