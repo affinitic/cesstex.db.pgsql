@@ -86,6 +86,10 @@ class CesstexModel(object):
 
         mapper(Implantation, implantationTable)
 
+        mapper(DossierDisciplinaire, dossierDisciplinaireTable,
+               properties={'student': relationship(Etudiant),
+                           'auteur': relationship(Professeur)})
+
         mapper(Professeur, professeurTable,
                properties={'statut': relationship(StatutMembre,
                                      primaryjoin=(professeurTable.c.prof_statut_fk == statutMembreTable.c.statmembre_pk)),
@@ -93,7 +97,9 @@ class CesstexModel(object):
                                      primaryjoin=(professeurTable.c.prof_ecole_fk == ecoleTable.c.ecole_pk))})
 
         mapper(Etudiant, etudiantTable,
-               properties={'titulaire01': relationship(Professeur,
+               properties={'dossierEleve': relationship(DossierDisciplinaire,
+                                           primaryjoin=(dossierDisciplinaireTable.c.dosdis_eleve_fk == etudiantTable.c.eleve_pk)),
+                           'titulaire01': relationship(Professeur,
                                           primaryjoin=(etudiantTable.c.eleve_prof_titulaire_01_fk == professeurTable.c.prof_pk),
                                           order_by=[etudiantTable.c.eleve_nom]),
                            'titulaire02': relationship(Professeur,
@@ -101,10 +107,6 @@ class CesstexModel(object):
                            'educateurReferent': relationship(Professeur,
                                                 primaryjoin=(etudiantTable.c.eleve_educateur_referent_fk == professeurTable.c.prof_pk),
                                                 order_by=[etudiantTable.c.eleve_nom])})
-
-        mapper(DossierDisciplinaire, dossierDisciplinaireTable,
-               properties={'student': relationship(Etudiant),
-                           'auteur': relationship(Professeur)})
 
         mapper(EvenementActe, evenementActeTable,
                properties={'etat': relationship(EtatPublication,
