@@ -15,19 +15,19 @@ class EtatPublication(MappedClassBase):
 
 
 class StatutMembre(MappedClassBase):
-    c = None
+    pass
 
 
 class Ecole(MappedClassBase):
-    c = None
+    pass
 
 
 class Implantation(MappedClassBase):
-    c = None
+    pass
 
 
 class Professeur(MappedClassBase):
-    c = None
+    pass
 
 
 class Etudiant(MappedClassBase):
