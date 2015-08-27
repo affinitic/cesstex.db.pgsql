@@ -59,6 +59,25 @@ def getImplantation(metadata):
                  extend_existing=True)
 
 
+def getEleveIsm(metadata):
+    autoload = False
+    if metadata.bind.has_table('eleve_ism'):
+        autoload = True
+    return Table('eleve_ism', metadata,
+                 Column('eleveism_pk', Integer(),
+                        Sequence('eleve_ism_eleveism_pk_seq'),
+                        primary_key=True),
+                 Column('eleveism_nom', Text()),
+                 Column('eleveism_prenom', Text()),
+                 Column('eleveism_classe', Text()),
+                 Column('eleveism_login', Text()),
+                 Column('eleveism_pass', Text()),
+                 Column('eleveism_email', Text()),
+                 autoload=autoload,
+                 extend_existing=True)
+
+
+
 def getProfesseur(metadata):
     autoload = False
     if metadata.bind.has_table('professeur'):
@@ -74,9 +93,9 @@ def getProfesseur(metadata):
                  Column('prof_pass', Text()),
                  Column('prof_email_id', Text()),
                  Column('prof_statut_fk', Integer(),
-                         ForeignKey('statut_membre.statmembre_pk')),
+                        ForeignKey('statut_membre.statmembre_pk')),
                  Column('prof_ecole_fk', Integer(),
-                         ForeignKey('ecole.ecole_pk')),
+                        ForeignKey('ecole.ecole_pk')),
                  autoload=autoload,
                  extend_existing=True)
 
@@ -93,11 +112,11 @@ def getEleveDossierDisciplinaire(metadata):
                  Column('eleve_prenom', Text()),
                  Column('eleve_classe', Text()),
                  Column('eleve_prof_titulaire_01_fk', Integer(),
-                         ForeignKey('professeur.prof_pk')),
+                        ForeignKey('professeur.prof_pk')),
                  Column('eleve_prof_titulaire_02_fk', Integer(),
-                         ForeignKey('professeur.prof_pk')),
+                        ForeignKey('professeur.prof_pk')),
                  Column('eleve_educateur_referent_fk', Integer(),
-                         ForeignKey('professeur.prof_pk')),
+                        ForeignKey('professeur.prof_pk')),
                  autoload=autoload,
                  extend_existing=True)
 
@@ -115,9 +134,9 @@ def getDossierDisciplinaire(metadata):
                  Column('dosdis_annee_scolaire', Integer()),
                  Column('dosdis_actif', Boolean(), default=True),
                  Column('dosdis_eleve_fk', Integer(),
-                         ForeignKey('eleve_dossier_disciplinaire.eleve_pk')),
+                        ForeignKey('eleve_dossier_disciplinaire.eleve_pk')),
                  Column('dosdis_auteur_fk', Integer(),
-                         ForeignKey('professeur.prof_pk')),
+                        ForeignKey('professeur.prof_pk')),
                  autoload=autoload,
                  extend_existing=True)
 
@@ -138,11 +157,11 @@ def getEvenementActe(metadata):
                  Column('eventact_intervenant', Text()),
                  Column('eventact_numero_ordre', Integer()),
                  Column('eventact_auteur_creation_fk', Integer(),
-                         ForeignKey('professeur.prof_pk')),
+                        ForeignKey('professeur.prof_pk')),
                  Column('eventact_etat_publication_fk', Integer(),
-                         ForeignKey('etat_publication.etat_pk')),
+                        ForeignKey('etat_publication.etat_pk')),
                  Column('eventact_dossier_diciplinaire_fk', Integer(),
-                         ForeignKey('dossier_disciplinaire.dosdis_pk')),
+                        ForeignKey('dossier_disciplinaire.dosdis_pk')),
                  autoload=autoload,
                  extend_existing=True)
 
@@ -157,11 +176,11 @@ def getEvenementActeDocument(metadata):
                  Column('eventactdoc_date_creation', DateTime(), default=func.now()),
                  Column('eventactdoc_nom_fichier', Text()),
                  Column('eventactdoc_auteur_creation_fk', Integer(),
-                         ForeignKey('professeur.prof_pk')),
+                        ForeignKey('professeur.prof_pk')),
                  Column('eventactdoc_eventact_fk', Integer(),
-                         ForeignKey('evenement_acte.eventact_pk')),
+                        ForeignKey('evenement_acte.eventact_pk')),
                  Column('eventactdoc_dossier_disciplinaire_fk', Integer(),
-                         ForeignKey('dossier_disciplinaire.dosdis_pk')),
+                        ForeignKey('dossier_disciplinaire.dosdis_pk')),
                  autoload=autoload,
                  extend_existing=True)
 

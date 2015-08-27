@@ -11,6 +11,7 @@ from cesstex.db.pgsql.baseTypes import (EtatPublication,
                                         Ecole,
                                         Implantation,
                                         Professeur,
+                                        EleveIsm,
                                         EleveDossierDisciplinaire,
                                         DossierDisciplinaire,
                                         EvenementActe,
@@ -23,6 +24,7 @@ from cesstex.db.pgsql.tables import (getEtatPublication,
                                      getEcole,
                                      getImplantation,
                                      getProfesseur,
+                                     getEleveIsm,
                                      getEleveDossierDisciplinaire,
                                      getDossierDisciplinaire,
                                      getEvenementActe,
@@ -60,6 +62,10 @@ class CesstexModel(object):
         professeurTable = getProfesseur(metadata)
         professeurTable.create(checkfirst=True)
 
+        eleveIsmTable = getEleveIsm(metadata)
+        eleveIsmTable.create(checkfirst=True)
+
+
         eleveDossierDisciplinaireTable = getEleveDossierDisciplinaire(metadata)
         eleveDossierDisciplinaireTable.create(checkfirst=True)
 
@@ -83,6 +89,8 @@ class CesstexModel(object):
         mapper(StatutMembre, statutMembreTable)
 
         mapper(Ecole, ecoleTable)
+
+        mapper(EleveIsm, eleveIsmTable)
 
         mapper(Implantation, implantationTable)
 
