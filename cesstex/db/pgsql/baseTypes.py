@@ -30,7 +30,7 @@ class Professeur(MappedClassBase):
     pass
 
 
-class Etudiant(MappedClassBase):
+class EleveDossierDisciplinaire(MappedClassBase):
     c = None
 
 

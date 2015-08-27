@@ -11,7 +11,7 @@ from cesstex.db.pgsql.baseTypes import (EtatPublication,
                                         Ecole,
                                         Implantation,
                                         Professeur,
-                                        Etudiant,
+                                        EleveDossierDisciplinaire,
                                         DossierDisciplinaire,
                                         EvenementActe,
                                         EvenementActeDocument,
@@ -23,7 +23,7 @@ from cesstex.db.pgsql.tables import (getEtatPublication,
                                      getEcole,
                                      getImplantation,
                                      getProfesseur,
-                                     getEtudiant,
+                                     getEleveDossierDisciplinaire,
                                      getDossierDisciplinaire,
                                      getEvenementActe,
                                      getEvenementActeDocument,
@@ -60,8 +60,8 @@ class CesstexModel(object):
         professeurTable = getProfesseur(metadata)
         professeurTable.create(checkfirst=True)
 
-        etudiantTable = getEtudiant(metadata)
-        etudiantTable.create(checkfirst=True)
+        eleveDossierDisciplinaireTable = getEleveDossierDisciplinaire(metadata)
+        eleveDossierDisciplinaireTable.create(checkfirst=True)
 
         dossierDisciplinaireTable = getDossierDisciplinaire(metadata)
         dossierDisciplinaireTable.create(checkfirst=True)
@@ -87,7 +87,7 @@ class CesstexModel(object):
         mapper(Implantation, implantationTable)
 
         mapper(DossierDisciplinaire, dossierDisciplinaireTable,
-               properties={'student': relationship(Etudiant),
+               properties={'student': relationship(EleveDossierDisciplinaire),
                            'auteur': relationship(Professeur)})
 
         mapper(Professeur, professeurTable,
@@ -96,17 +96,17 @@ class CesstexModel(object):
                            'ecole': relationship(Ecole,
                                      primaryjoin=(professeurTable.c.prof_ecole_fk == ecoleTable.c.ecole_pk))})
 
-        mapper(Etudiant, etudiantTable,
+        mapper(EleveDossierDisciplinaire, eleveDossierDisciplinaireTable,
                properties={'dossierEleve': relationship(DossierDisciplinaire,
-                                           primaryjoin=(dossierDisciplinaireTable.c.dosdis_eleve_fk == etudiantTable.c.eleve_pk)),
+                                           primaryjoin=(dossierDisciplinaireTable.c.dosdis_eleve_fk == eleveDossierDisciplinaireTable.c.eleve_pk)),
                            'titulaire01': relationship(Professeur,
-                                          primaryjoin=(etudiantTable.c.eleve_prof_titulaire_01_fk == professeurTable.c.prof_pk),
-                                          order_by=[etudiantTable.c.eleve_nom]),
+                                          primaryjoin=(eleveDossierDisciplinaireTable.c.eleve_prof_titulaire_01_fk == professeurTable.c.prof_pk),
+                                          order_by=[eleveDossierDisciplinaireTable.c.eleve_nom]),
                            'titulaire02': relationship(Professeur,
-                                          primaryjoin=(etudiantTable.c.eleve_prof_titulaire_02_fk == professeurTable.c.prof_pk)),
+                                          primaryjoin=(eleveDossierDisciplinaireTable.c.eleve_prof_titulaire_02_fk == professeurTable.c.prof_pk)),
                            'educateurReferent': relationship(Professeur,
-                                                primaryjoin=(etudiantTable.c.eleve_educateur_referent_fk == professeurTable.c.prof_pk),
-                                                order_by=[etudiantTable.c.eleve_nom])})
+                                                primaryjoin=(eleveDossierDisciplinaireTable.c.eleve_educateur_referent_fk == professeurTable.c.prof_pk),
+                                                order_by=[eleveDossierDisciplinaireTable.c.eleve_nom])})
 
         mapper(EvenementActe, evenementActeTable,
                properties={'etat': relationship(EtatPublication,

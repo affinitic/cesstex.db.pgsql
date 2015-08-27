@@ -81,13 +81,13 @@ def getProfesseur(metadata):
                  extend_existing=True)
 
 
-def getEtudiant(metadata):
+def getEleveDossierDisciplinaire(metadata):
     autoload = False
-    if metadata.bind.has_table('etudiant'):
+    if metadata.bind.has_table('eleve_dossier_disciplinaire'):
         autoload = True
-    return Table('etudiant', metadata,
+    return Table('eleve_dossier_disciplinaire', metadata,
                  Column('eleve_pk', Integer(),
-                        Sequence('etudiant_eleve_pk_seq'),
+                        Sequence('eleve_dossier_disciplinaire_eleve_pk_seq'),
                         primary_key=True),
                  Column('eleve_nom', Text()),
                  Column('eleve_prenom', Text()),
@@ -115,7 +115,7 @@ def getDossierDisciplinaire(metadata):
                  Column('dosdis_annee_scolaire', Integer()),
                  Column('dosdis_actif', Boolean(), default=True),
                  Column('dosdis_eleve_fk', Integer(),
-                         ForeignKey('etudiant.eleve_pk')),
+                         ForeignKey('eleve_dossier_disciplinaire.eleve_pk')),
                  Column('dosdis_auteur_fk', Integer(),
                          ForeignKey('professeur.prof_pk')),
                  autoload=autoload,
