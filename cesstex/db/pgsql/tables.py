@@ -89,7 +89,8 @@ def getEleveIsm(metadata):
                  Column('eleveism_login', Text()),
                  Column('eleveism_pass', Text()),
                  Column('eleveism_email', Text()),
-                 Column('eleveism_classe_fk', Integer()),
+                 Column('eleveism_classe_fk', Integer(),
+                        ForeignKey('classe_ism.classeism_pk')),
                  autoload=autoload,
                  extend_existing=True)
 
