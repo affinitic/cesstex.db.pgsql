@@ -34,6 +34,12 @@ class EleveIsm(MappedClassBase):
 
     pass
 
+
+class ClasseIsm(MappedClassBase):
+
+    pass
+
+
 class EleveDossierDisciplinaire(MappedClassBase):
     c = None
 

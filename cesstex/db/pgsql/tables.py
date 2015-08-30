@@ -77,6 +77,22 @@ def getEleveIsm(metadata):
                  extend_existing=True)
 
 
+def getClasseIsm(metadata):
+    autoload = False
+    if metadata.bind.has_table('classe_ism'):
+        autoload = True
+    return Table('classe_ism', metadata,
+                 Column('classeism_pk', Integer(),
+                        Sequence('clase_ism_classeism_pk_seq'),
+                        primary_key=True),
+                 Column('classeism_nom', Text()),
+                 Column('classeism_titulaire_01_fk', Integer(),
+                        ForeignKey('professeur.prof_pk')),
+                 Column('classeism_titulaire_02_fk', Integer(),
+                        ForeignKey('professeur.prof_pk')),
+                 autoload=autoload,
+                 extend_existing=True)
+
 
 def getProfesseur(metadata):
     autoload = False
@@ -196,7 +212,7 @@ def getEvenementActeLogModification(metadata):
                  Column('eventactlogmodif_date_modification', DateTime(), default=func.now()),
                  Column('eventactlogmodif_auteur_modification', Text()),
                  Column('eventactlogmodif_evenement_acte_fk', Integer(),
-                         ForeignKey('evenement_acte.eventact_pk')),
+                        ForeignKey('evenement_acte.eventact_pk')),
                  autoload=autoload,
                  extend_existing=True)
 

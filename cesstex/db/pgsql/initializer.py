@@ -12,6 +12,7 @@ from cesstex.db.pgsql.baseTypes import (EtatPublication,
                                         Implantation,
                                         Professeur,
                                         EleveIsm,
+                                        ClasseIsm,
                                         EleveDossierDisciplinaire,
                                         DossierDisciplinaire,
                                         EvenementActe,
@@ -25,6 +26,7 @@ from cesstex.db.pgsql.tables import (getEtatPublication,
                                      getImplantation,
                                      getProfesseur,
                                      getEleveIsm,
+                                     getClasseIsm,
                                      getEleveDossierDisciplinaire,
                                      getDossierDisciplinaire,
                                      getEvenementActe,
@@ -65,6 +67,8 @@ class CesstexModel(object):
         eleveIsmTable = getEleveIsm(metadata)
         eleveIsmTable.create(checkfirst=True)
 
+        classeIsmTable = getClasseIsm(metadata)
+        classeIsmTable.create(checkfirst=True)
 
         eleveDossierDisciplinaireTable = getEleveDossierDisciplinaire(metadata)
         eleveDossierDisciplinaireTable.create(checkfirst=True)
@@ -115,6 +119,12 @@ class CesstexModel(object):
                            'educateurReferent': relationship(Professeur,
                                                 primaryjoin=(eleveDossierDisciplinaireTable.c.eleve_educateur_referent_fk == professeurTable.c.prof_pk),
                                                 order_by=[eleveDossierDisciplinaireTable.c.eleve_nom])})
+
+        mapper(ClasseIsm, classeIsmTable,
+               properties={'titulaire01': relationship(Professeur,
+                                          primaryjoin=(classeIsmTable.c.classeism_titulaire_01_fk == professeurTable.c.prof_pk)),
+                           'titulaire02': relationship(Professeur,
+                                          primaryjoin=(classeIsmTable.c.classeism_titulaire_02_fk == professeurTable.c.prof_pk))})
 
         mapper(EvenementActe, evenementActeTable,
                properties={'etat': relationship(EtatPublication,
