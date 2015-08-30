@@ -65,7 +65,7 @@ def getClasseIsm(metadata):
         autoload = True
     return Table('classe_ism', metadata,
                  Column('classeism_pk', Integer(),
-                        Sequence('clase_ism_classeism_pk_seq'),
+                        Sequence('classe_ism_classeism_pk_seq'),
                         primary_key=True),
                  Column('classeism_nom', Text()),
                  Column('classeism_titulaire_01_fk', Integer(),
