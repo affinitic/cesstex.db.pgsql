@@ -94,19 +94,28 @@ class CesstexModel(object):
 
         mapper(Ecole, ecoleTable)
 
-        mapper(EleveIsm, eleveIsmTable)
-
         mapper(Implantation, implantationTable)
-
-        mapper(DossierDisciplinaire, dossierDisciplinaireTable,
-               properties={'student': relationship(EleveDossierDisciplinaire),
-                           'auteur': relationship(Professeur)})
 
         mapper(Professeur, professeurTable,
                properties={'statut': relationship(StatutMembre,
                                      primaryjoin=(professeurTable.c.prof_statut_fk == statutMembreTable.c.statmembre_pk)),
                            'ecole': relationship(Ecole,
                                      primaryjoin=(professeurTable.c.prof_ecole_fk == ecoleTable.c.ecole_pk))})
+
+        mapper(ClasseIsm, classeIsmTable,
+               properties={'titulaire01': relationship(Professeur,
+                                          primaryjoin=(classeIsmTable.c.classeism_titulaire_01_fk == professeurTable.c.prof_pk)),
+                           'titulaire02': relationship(Professeur,
+                                          primaryjoin=(classeIsmTable.c.classeism_titulaire_02_fk == professeurTable.c.prof_pk))})
+
+        mapper(EleveIsm, eleveIsmTable,
+               properties={'classe': relationship(ClasseIsm,
+                                     primaryjoin=(eleveIsmTable.c.eleveism_classe_fk == classeIsmTable.c.classeism_pk))})
+
+
+        mapper(DossierDisciplinaire, dossierDisciplinaireTable,
+                       properties={'student': relationship(EleveDossierDisciplinaire),
+                                   'auteur': relationship(Professeur)})
 
         mapper(EleveDossierDisciplinaire, eleveDossierDisciplinaireTable,
                properties={'dossierEleve': relationship(DossierDisciplinaire,
@@ -119,12 +128,6 @@ class CesstexModel(object):
                            'educateurReferent': relationship(Professeur,
                                                 primaryjoin=(eleveDossierDisciplinaireTable.c.eleve_educateur_referent_fk == professeurTable.c.prof_pk),
                                                 order_by=[eleveDossierDisciplinaireTable.c.eleve_nom])})
-
-        mapper(ClasseIsm, classeIsmTable,
-               properties={'titulaire01': relationship(Professeur,
-                                          primaryjoin=(classeIsmTable.c.classeism_titulaire_01_fk == professeurTable.c.prof_pk)),
-                           'titulaire02': relationship(Professeur,
-                                          primaryjoin=(classeIsmTable.c.classeism_titulaire_02_fk == professeurTable.c.prof_pk))})
 
         mapper(EvenementActe, evenementActeTable,
                properties={'etat': relationship(EtatPublication,

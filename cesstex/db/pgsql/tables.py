@@ -59,24 +59,6 @@ def getImplantation(metadata):
                  extend_existing=True)
 
 
-def getEleveIsm(metadata):
-    autoload = False
-    if metadata.bind.has_table('eleve_ism'):
-        autoload = True
-    return Table('eleve_ism', metadata,
-                 Column('eleveism_pk', Integer(),
-                        Sequence('eleve_ism_eleveism_pk_seq'),
-                        primary_key=True),
-                 Column('eleveism_nom', Text()),
-                 Column('eleveism_prenom', Text()),
-                 Column('eleveism_classe', Text()),
-                 Column('eleveism_login', Text()),
-                 Column('eleveism_pass', Text()),
-                 Column('eleveism_email', Text()),
-                 autoload=autoload,
-                 extend_existing=True)
-
-
 def getClasseIsm(metadata):
     autoload = False
     if metadata.bind.has_table('classe_ism'):
@@ -90,6 +72,25 @@ def getClasseIsm(metadata):
                         ForeignKey('professeur.prof_pk')),
                  Column('classeism_titulaire_02_fk', Integer(),
                         ForeignKey('professeur.prof_pk')),
+                 autoload=autoload,
+                 extend_existing=True)
+
+
+def getEleveIsm(metadata):
+    autoload = False
+    if metadata.bind.has_table('eleve_ism'):
+        autoload = True
+    return Table('eleve_ism', metadata,
+                 Column('eleveism_pk', Integer(),
+                        Sequence('eleve_ism_eleveism_pk_seq'),
+                        primary_key=True),
+                 Column('eleveism_nom', Text()),
+                 Column('eleveism_prenom', Text()),
+                 Column('eleveism_login', Text()),
+                 Column('eleveism_pass', Text()),
+                 Column('eleveism_email', Text()),
+                 Column('eleveism_classe_fk', Integer(),
+                        ForeignKey('classe_ism.classeism_pk')),
                  autoload=autoload,
                  extend_existing=True)
 
