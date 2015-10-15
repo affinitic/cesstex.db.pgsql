@@ -109,6 +109,7 @@ def getProfesseur(metadata):
                  Column('prof_login', Text()),
                  Column('prof_pass', Text()),
                  Column('prof_email_id', Text()),
+                 Column('prof_actif', Boolean(), default=True),
                  Column('prof_statut_fk', Integer(),
                         ForeignKey('statut_membre.statmembre_pk')),
                  Column('prof_ecole_fk', Integer(),
